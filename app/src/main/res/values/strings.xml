@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WK01H02</string>
+    <string name="titleText">Login</string>
+    <string name="loginText">Log In</string>
+    <string name="usernameText">Username</string>
+    <string name="emailText">Email</string>
 </resources>
