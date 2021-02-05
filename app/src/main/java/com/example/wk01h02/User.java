@@ -12,9 +12,7 @@ public class User {
 
     private String email;
 
-    public int getId() {
-        return id;
-    }
+    public String getId() { return Integer.toString(id); }
 
     public String getName() {
         return name;
