@@ -136,14 +136,14 @@ public class LoginActivity extends AppCompatActivity {
                 else if(lifetimeUsernameCorrect && lifetimeEmailCorrect) {
                     errorText.setText("The credentials don't match.");
                 }
+                else if(!lifetimeUsernameCorrect && !lifetimeEmailCorrect){
+                    errorText.setText("Both credentials are incorrect.");
+                }
                 else if(!lifetimeUsernameCorrect) {
                     errorText.setText("Username is incorrect.");
                 }
-                else if(!lifetimeEmailCorrect) {
-                    errorText.setText("Email is incorrect.");
-                }
                 else {
-                    errorText.setText("Both credentials are incorrect.");
+                    errorText.setText("Email is incorrect.");
                 }
             }
 
