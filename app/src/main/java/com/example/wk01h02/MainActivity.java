@@ -14,9 +14,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Query;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView userHelloText;
     private TextView textViewResult;
 
     private static final String MAIN = "com.example.intents.main";
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        userHelloText = findViewById(R.id.userHelloText);
         textViewResult = findViewById(R.id.text_view_result);
 
         loginUserID = getIntent().getStringExtra(MAIN);
@@ -45,7 +48,29 @@ public class MainActivity extends AppCompatActivity {
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
+        Call<List<User>> user = jsonPlaceHolderApi.getUserByID(loginUserID);
         Call<List<Post>> call = jsonPlaceHolderApi.getPostsByUserID(loginUserID);
+
+        user.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> user, Response<List<User>> response) {
+                if(!response.isSuccessful()) {
+                    textViewResult.setText("Code: " + response.code());
+                    return;
+                }
+
+                List<User> users = response.body();
+
+                for(User usere : users) {
+                    userHelloText.setText("Hello there " + usere.getName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
 
         call.enqueue(new Callback<List<Post>>() {
             @Override

@@ -21,10 +21,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity {
 
     private TextView textViewResult;
-
-    EditText usernameField;
-    EditText emailField;
-    Button loginButton;
+    private TextView errorText;
+    private EditText usernameField;
+    private EditText emailField;
+    private Button loginButton;
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         textViewResult = findViewById(R.id.text_view_result);
+        errorText = findViewById(R.id.errorText);
         usernameField = findViewById(R.id.usernameField);
         emailField = findViewById(R.id.emailField);
         loginButton = findViewById(R.id.loginButton);
@@ -102,14 +103,48 @@ public class LoginActivity extends AppCompatActivity {
 
                 List<User> users = response.body();
 
+                String userID = null;
+
+                boolean lifetimeUsernameCorrect = false;
+                boolean lifetimeEmailCorrect = false;
+                boolean succeed = false;
+
                 for (User user : users) {
-                    Log.d("Hello",user.getUsername() + ", " + user.getEmail());
-                    if(user.getUsername().equals(username) && user.getEmail().equals(email)) {
-                        Intent intent = MainActivity.newIntent(LoginActivity.this, user.getId());
+                    boolean usernameCorrect = false;
+                    boolean emailCorrect = false;
+
+                    if(user.getUsername().equals(username)) {
+                        usernameCorrect = true;
+                        lifetimeUsernameCorrect = true;
+                    }
+                    if(user.getEmail().equals(email)) {
+                        emailCorrect = true;
+                        lifetimeEmailCorrect = true;
+                    }
+
+                    if(usernameCorrect && emailCorrect) {
+                        succeed = true;
+                        userID = user.getId();
+                        Intent intent = MainActivity.newIntent(LoginActivity.this, userID);
                         startActivity(intent);
                     }
                 }
-                Log.d("Hello","HIHI " + username + ", " + email);
+
+                if(succeed) {
+                    errorText.setText("");
+                }
+                else if(lifetimeUsernameCorrect && lifetimeEmailCorrect) {
+                    errorText.setText("The credentials don't match.");
+                }
+                else if(lifetimeUsernameCorrect) {
+                    errorText.setText("Username is incorrect.");
+                }
+                else if(lifetimeEmailCorrect) {
+                    errorText.setText("Email is incorrect.");
+                }
+                else {
+                    errorText.setText("Both credentials are incorrect.");
+                }
             }
 
             @Override

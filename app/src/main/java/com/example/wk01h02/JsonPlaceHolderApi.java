@@ -20,6 +20,11 @@ public interface JsonPlaceHolderApi {
     Call<List<User>> getUsers();
 
     @GET("users")
+    Call<List<User>> getUserByID(
+            @Query("id") String userId
+    );
+
+    @GET("users")
     Call<List<User>> getUserByCredentials(
             @Query("username") String username,
             @Query("email") String email

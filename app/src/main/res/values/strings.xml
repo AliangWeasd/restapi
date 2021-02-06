@@ -4,4 +4,8 @@
     <string name="loginText">Log In</string>
     <string name="usernameText">Username</string>
     <string name="emailText">Email</string>
+    <string name="usernameIncorrect">Username is incorrect.</string>
+    <string name="emailIncorrect">Email is incorrect.</string>
+    <string name="bothIncorrect">Credentials are incorrect.</string>
+    <string name="empty"></string>
 </resources>
